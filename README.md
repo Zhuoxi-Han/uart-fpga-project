@@ -82,6 +82,13 @@ This project aims to build a deep understanding of asynchronous serial communica
 * document learnings in docs/learning_notes.md
 
 # Milestone 2 -- Baud Generator
+## Task
+* generate the 115200 baud tick that UART needs from the 50MHz FPGA system clock.
+
+## Deliverable
+* docs/learning_notes.md
+* docs/debug_log.md
+
 # Milestone 3 -- UART Transmitter
 # Milestone 4 -- UART Receiver
 # Milestone 5 -- Hardware Integration

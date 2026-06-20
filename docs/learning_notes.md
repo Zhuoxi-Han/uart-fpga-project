@@ -53,9 +53,6 @@ both sides transmit simultaneously.
 # timing/synchronization
 UART is asynchronous - transmitter and receiver do not share a common clock. So they must transmit at the same speed (baud rate) and the same structure/parameters (UART frame).
 
-## baud rate
-4800,9600,19200,57600,115200
-
 ## UART frame
 consists of
 * start bits
@@ -162,3 +159,30 @@ process:
 5. the receiver counts 16 clock cycles, samples the first data bit, counts another 16 clock cycles, samples the second bit, repeats until it reads the stop bit.
 6. to avoid errors from electrical noise, UART modules do not just sample once. They take 3 distinct samples around the center of the bit, like at clock cycles 7,8 and 9 of the 16x window.
 7. the receiver uses a majority bote (2 out of 3) to determine if the bit is a 0 or a 1.
+
+# Milestone 2
+FPGA clock runs at 50 MHz, but UART communication requires 115200 baud.
+How many times must my high-speed system clock tick before exactly one bit-period/one oversampling slice has passed?
+
+## calculations
+FPGA has 50000000 cycles per second clock, which means the clock ticks 50 million times in one second;
+the inverse of this number is the clock period:
+1/50000000 = 2e-8, which means it takes 2e-8 seconds for every clock tick;
+since we want 115200 bits per second,
+for standard 16x oversampling modules, receiver will need to process
+115200*16 = 1843200 bits per second,
+the inverse of this number is the time needed for one bit to be processed:
+1/1843200 = 5.425e-7 bit time;
+the goal is to find how many times must the high-speed system clock tick before exactly one oversampling slice has passed;
+so total bit time/one cycle time = x number of cycles to process one bit:
+5.425e-7/2e-8 = (1/1843200) / (1/50000000) = 50000000/1843200 = 27 cycles.
+
+This aligns with the formula:
+$Register Value = /frac{f_clock}{Oversampling * Baud Rate}$
+
+[!TIP]
+Register Value is the number written into the hardware called Baud Rate Register, this register will do countdowns repeatedly, starting from the register value. When it hits 0, it sends out a pulse that tells the UART to sample the wire or shift out a bit. 
+
+Note that TX does not require oversampling. So its Register Value is:
+$RV_TX = /frac{50000000}{115200} = 434$
+
