@@ -186,3 +186,56 @@ Register Value is the number written into the hardware called Baud Rate Register
 Note that TX does not require oversampling. So its Register Value is:
 $RV_TX = /frac{50000000}{115200} = 434$
 
+## CLOCK_50 and Pin Assignment
+When writing the top level module
+```uart_fpga.v```
+there is an input 
+```CLOCK_50```
+
+How does Quartus know that this means something?
+The answer is
+==> Pin Assignment
+
+in other words:
+```.qsf```
+file, which stands for project setting file.
+
+Inside the .qsf there is a line 
+```set_location_assignment PIN_AF14 -to CLOCK_50```
+that connects the physical FPGA pin AF14 to the keyword `CLOCK_50`.
+
+### Check Pin Assignment
+#### On Quartus
+Assignment -> Pin Planner
+see if a location is assigned to the node "CLOCK_50".
+
+#### in .qsf file
+Open the uart_fpga.qsf file with NotePad, look for
+```set_location_assignment Pin_AF14 -to CLOCK_50```
+
+## Run Simulation on Questa
+Best create a standalone Questa project than using RTL Simulation on Quartus to open Questa for you.
+
+```vlib work``` creats a physical directory to save compiled data in the same dir as  the project file .mpf (Mentor Project File).
+
+Only need to run ONCE for every project.
+
+```vmap work work``` links the logical name "work" to that directory.
+
+```vlog leaf_module.v tb_leaf_module.v``` compiles the listed design files. After compiling, can access the files uing ```work.file.v```.
+
+[!NOTE]Must use relative path when using vlog.
+
+```vsim -voptargs="+acc" work.tb_leaf_module``` load the simulation into memory with optimization arguments enabled.
+Important for debugging. It tells Questa's optimizer to preserve internal wire and register names so can see in wave window.
+
+```add wave -r /*``` adds all signals to the waveform viewer. "r" stands for recursive, grabs all signals from top-level testbench and inner leaf module structures.
+
+```run -all``` runs the simulation. Stops until hits ```$stop``` or ```$finish``` in tb.
+
+```run 100us``` to run for a specific duration.
+
+or can use ";" to run multiple commands at one line:
+```vlog leaf_module.v tb_leaf_module.v; restart -f; run -all```
+
+```f``` stands for force, resets simulation clock back to 0 ns and clears waves without closing GUI, keeping current wave zoom levels.

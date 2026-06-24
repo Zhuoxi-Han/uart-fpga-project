@@ -1,0 +1,32 @@
+# Compile of baud_gen.v was successful.
+# Compile of baud_gen_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+# Load canceled
+vsim -voptargs=+acc work.baud_gen
+# vsim -voptargs="+acc" work.baud_gen 
+# Start time: 10:45:40 on Jun 23,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.baud_gen(fast)
+vsim -voptargs=+acc work.baud_gen_tb
+# End time: 10:48:44 on Jun 23,2026, Elapsed time: 0:03:04
+# Errors: 0, Warnings: 7
+# vsim -voptargs="+acc" work.baud_gen_tb 
+# Start time: 10:48:44 on Jun 23,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.baud_gen_tb(fast)
+# Loading work.baud_gen(fast)
+add wave -position insertpoint  \
+sim:/baud_gen_tb/clk \
+sim:/baud_gen_tb/rst \
+sim:/baud_gen_tb/baud_tick
+run -all
+# ** Note: $stop    : C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/baud_gen_tb.v(25)
+#    Time: 50100 ns  Iteration: 0  Instance: /baud_gen_tb
+# Break in Module baud_gen_tb at C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/baud_gen_tb.v line 25
+quit -sim
+# End time: 10:51:46 on Jun 23,2026, Elapsed time: 0:03:02
+# Errors: 0, Warnings: 2
