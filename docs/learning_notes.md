@@ -160,7 +160,9 @@ process:
 6. to avoid errors from electrical noise, UART modules do not just sample once. They take 3 distinct samples around the center of the bit, like at clock cycles 7,8 and 9 of the 16x window.
 7. the receiver uses a majority bote (2 out of 3) to determine if the bit is a 0 or a 1.
 
-# Milestone 2
+# Milestone 2 Baud Rate Generator
+This milestone aims to produce a 115200 baud rate generator and complete its simulation on Questa.
+
 FPGA clock runs at 50 MHz, but UART communication requires 115200 baud.
 How many times must my high-speed system clock tick before exactly one bit-period/one oversampling slice has passed?
 
@@ -239,3 +241,22 @@ or can use ";" to run multiple commands at one line:
 ```vlog leaf_module.v tb_leaf_module.v; restart -f; run -all```
 
 ```f``` stands for force, resets simulation clock back to 0 ns and clears waves without closing GUI, keeping current wave zoom levels.
+
+# Milestone 3 UART Transmitter TX FSM
+Design a complete finite state machine to realize serial transmission.
+The inputs are 
+```verilog  
+clk
+rst
+baud_tick
+tx_start
+data_in[7:0]
+```
+
+## Learning Objective
+- understand serial transimission and serial stream
+- grasp UART frame transmission sequence
+- FSM design
+- shift register behavior
+- clock domain vs baud domain
+
