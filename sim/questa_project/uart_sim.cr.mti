@@ -1,8 +1,29 @@
-C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/baud_gen.v {1 {vlog -work work -vopt -stats=none C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/baud_gen.v
+C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/uart_tx_tb.v {1 {vlog -work work -vopt -stats=none C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/uart_tx_tb.v
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module uart_tx_tb
+
+Top level modules:
+	uart_tx_tb
+
+} {} {}} C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/uart_tx.v {1 {vlog -work work -vopt -stats=none C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/uart_tx.v
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module uart_tx
+
+Top level modules:
+	uart_tx
+
+} {} {}} C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/baud_gen.v {1 {vlog -work work -vopt -stats=none C:/Users/pomlo/Project/resume-project/uart-fpga-project/rt1/baud_gen.v
 Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
 -- Compiling module baud_gen
 
 Top level modules:
 	baud_gen
+
+} {} {}} C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/baud_gen_tb.v {1 {vlog -work work -vopt -stats=none C:/Users/pomlo/Project/resume-project/uart-fpga-project/tb/baud_gen_tb.v
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module baud_gen_tb
+
+Top level modules:
+	baud_gen_tb
 
 } {} {}}

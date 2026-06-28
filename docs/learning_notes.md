@@ -243,20 +243,28 @@ or can use ";" to run multiple commands at one line:
 ```f``` stands for force, resets simulation clock back to 0 ns and clears waves without closing GUI, keeping current wave zoom levels.
 
 # Milestone 3 UART Transmitter TX FSM
-Design a complete finite state machine to realize serial transmission.
-The inputs are 
-```verilog  
-clk
-rst
-baud_tick
-tx_start
-data_in[7:0]
+## UART frame
+```verilog
+IDLE (1)
+START (0)
+DATA[0]
+DATA[1]
+...
+DATA[7]
+STOP (1)
+IDLE (1)
 ```
+FSM states: IDLE, START, DATA, STOP
 
-## Learning Objective
-- understand serial transimission and serial stream
-- grasp UART frame transmission sequence
-- FSM design
-- shift register behavior
-- clock domain vs baud domain
+## Latch Start Detection
+By using ```tx_start_pulse = tx_start & ~tx_start_d;```, you guarantee that no matter how long a user or an external processor holds down the start line, your system will only execute the task exactly once per press.To make this line work, you must have a separate always block that updates ```tx_start_d <= tx_start;```. 
+
+## Clock Domain Mismatch
+The problem rises when the state change from IDLE to START. This action relys on posedge of baud_tick as well as tx_start, tx_start could be set to HIGH while baud_tick isn't HIGH yet. By the time baud_tick is high, tx_start already gone back to low.
+
+The solution to this particular module should be:
+
+
+
+
 

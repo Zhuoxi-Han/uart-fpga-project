@@ -135,3 +135,107 @@ Demonstrated Skills:
 - systematically isolate root cause
 
 -->
+
+[2026/06/27]
+Milestone 3 debug log
+
+# Bug 1 — tx_start missed due to baud_tick sampling delay
+## Symptom
+tx_start asserted in testbench
+FSM remained in IDLE
+No transition to START state
+
+## Root Cause
+
+FSM sampled tx_start only when baud_tick == 1.
+
+tx_start pulse was shorter than baud interval, so it was missed.
+
+## Fix
+```verilog
+reg tx_start_d;
+wire tx_start_pulse;
+
+always @(posedge clk) begin
+    tx_start_d <= tx_start;
+end
+
+assign tx_start_pulse = tx_start & ~tx_start_d;
+......
+IDLE: begin
+    if (tx_start_pulse)
+        state <= START;
+end
+```
+
+## Lesson
+Control signals must not depend on baud-timed sampling.
+
+# Bug 2 — START → DATA transition timing mismatch
+## Symptom
+FSM entered START state
+Transition to DATA unreliable or delayed
+
+## Root Cause
+
+START → DATA transition depended on baud_tick, but timing alignment was inconsistent.
+
+## Fix
+```verilog
+START: begin
+    tx <= 0;
+
+    if (baud_tick)
+        state <= DATA;
+end
+```
+
+## Lesson
+State transitions must be aligned to baud_tick, but start detection must be independent.
+
+# Bug 3 — tx always 0 due to shift_reg timing issue
+## Symptom
+state == DATA confirmed
+shift_reg == 11110001 confirmed
+tx always 0
+
+## Root Cause
+shift_reg was not correctly stable at the time tx was sampled.
+
+## Fix
+```verilog
+DATA: begin
+    if (baud_tick) begin
+        tx <= shift_reg[0];
+        shift_reg <= shift_reg >> 1;
+    end
+end
+```
+
+## Lesson
+tx must always be derived from a stable snapshot of shift_reg.
+
+# Bug 4— STOP bit timing incorrect
+STOP bit not held for full baud period
+
+
+Root Cause: tx updated only on baud_tick, shortening STOP duration.
+
+Fix
+```
+STOP: begin
+    tx <= 1;
+
+    if (baud_tick)
+        state <= IDLE;
+end
+```
+
+Lesson: UART STOP bit must be held for full baud interval.
+
+# Engineering Summary
+tx_start must be edge-detected, not level-based
+START state must synchronize with baud_tick
+shift_reg must be loaded before DATA phase
+nonblocking assignments require careful next-state reasoning
+STOP bit must be held for full baud period

@@ -89,7 +89,38 @@ This project aims to build a deep understanding of asynchronous serial communica
 * docs/learning_notes.md
 * docs/debug_log.md
 
-# Milestone 3 -- UART Transmitter
+# Milestone 3 UART Transmitter TX FSM
+Design a complete finite state machine to realize serial transmission compliant to UART protocol.
+
+The inputs are 
+```verilog  
+clk
+rst
+baud_tick
+tx_start
+data_in[7:0] 
+```
+and the outputs:
+```verilog
+tx
+tx_busy
+```
+
+This module essentially want to send 1 start bit, 8 data bits and 1 stop bit when tx_start = 1.
+
+## Learning Objective
+- understand serial transimission and serial stream
+- grasp UART frame transmission sequence
+- FSM design
+- shift register behavior/shift logic
+- clock domain vs baud domain
+- bit ordering
+
+## Deliverable
+- docs/learning_notes.md
+- rt1/uart_tx.v
+- tb/uart_tx_tb.v
+
 # Milestone 4 -- UART Receiver
 # Milestone 5 -- Hardware Integration
 # Milestone 6 -- Polish Project

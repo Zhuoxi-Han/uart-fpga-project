@@ -9,3 +9,15 @@ simulation/
 
 *.tmp
 *.swp
+
+# ignore Questa compilation libraries
+work/
+msim/
+_vti/
+
+# ignore simulation waveform databases and locks
+*.wlf
+*.wlf_LOCK
+transcript
+vsim.wlf
+
